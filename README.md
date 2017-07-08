@@ -2,8 +2,11 @@
 
 封装一些请求坐标的操作
 
-暂时只支持高德，以后会添加百度和google
 
+
+**高德地图**
+
+------
 
 **不要忘记在AndroidManifest.xml中配置key**
 
@@ -12,3 +15,27 @@
 ```
 
 
+
+添加混淆
+
+```
+-keep class com.amap.api.location.**{*;}
+-keep class com.amap.api.fence.**{*;}
+-keep class com.autonavi.aps.amapapi.model.**{*;}
+```
+
+
+
+**百度地图**
+
+------
+
+待完善
+
+
+
+**google地图**
+
+------
+
+待完善
