@@ -23,6 +23,10 @@ public class LocationProvider {
         }
     };
 
+    public static final LocationProvider get(){
+        return gDefault.get();
+    }
+
     public void init(Context context){
         aMapLocationClient = new AMapLocationClient(context);
         aMapLocationClient.setLocationOption(getDefaultOption());
