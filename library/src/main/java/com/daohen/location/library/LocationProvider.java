@@ -5,6 +5,7 @@ import android.content.Context;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.daohen.personal.toolbox.library.Singleton;
 
 /**
  * CREATE BY ALUN
@@ -13,42 +14,51 @@ import com.amap.api.location.AMapLocationListener;
  */
 public class LocationProvider {
 
-    private static LocationProvider instance;
+    private AMapLocationClient aMapLocationClient;
 
-    public static final LocationProvider get(Context context){
-        if (instance == null){
-            synchronized (LocationProvider.class){
-                if (instance == null){
-                    instance = new LocationProvider(context);
-                }
-            }
+    private static final Singleton<LocationProvider> gDefault = new Singleton<LocationProvider>() {
+        @Override
+        protected LocationProvider create() {
+            return new LocationProvider();
         }
+    };
 
-        return instance;
+    public void init(Context context){
+        aMapLocationClient = new AMapLocationClient(context);
+        aMapLocationClient.setLocationOption(getDefaultOption());
     }
 
     public void startLocation(){
+        if (checkNull())
+            return;
+
         aMapLocationClient.startLocation();
     }
 
     public void stopLocation(){
+        if (checkNull())
+            return;
+
         aMapLocationClient.stopLocation();
     }
 
     public void setCallback(AMapLocationListener listener){
+        if (checkNull())
+            return;
+
         aMapLocationClient.setLocationListener(listener);
     }
 
     public void onDestory(){
+        if (checkNull())
+            return;
+
         aMapLocationClient.onDestroy();
         aMapLocationClient = null;
     }
 
-    private AMapLocationClient aMapLocationClient;
-
-    private LocationProvider(Context context){
-        aMapLocationClient = new AMapLocationClient(context);
-        aMapLocationClient.setLocationOption(getDefaultOption());
+    private boolean checkNull(){
+        return aMapLocationClient == null;
     }
 
     private AMapLocationClientOption getDefaultOption(){
